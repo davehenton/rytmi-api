@@ -1,10 +1,8 @@
 'use strict';
 
-let knex = require('knex')({ client: 'mysql', connection: process.env.MYSQL_DATABASE_CONNECTION });
-let bookshelf = require('bookshelf')(knex);
-
+let db = require('./database');
 require('./user');
-let Profile = Bookshelf.Model.extend({
+let Profile = db.Model.extend({
     tableName: 'profiles',
     hasTimestamps: true,
 
@@ -13,4 +11,4 @@ let Profile = Bookshelf.Model.extend({
     }
 });
 
-module.exports = Bookshelf.model('Profile', Profile);
+module.exports = db.model('Profile', Profile);

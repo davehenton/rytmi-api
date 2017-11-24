@@ -8,10 +8,7 @@ pids
 *.pid
 *.seed
 *.pid.lock
-
-# configuration
-config/database.json
-bin/setup-db.sh
+rytmidev.sqlite
 
 # node-waf configuration
 .lock-wscript

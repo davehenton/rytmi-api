@@ -15,6 +15,8 @@ const logger = new (winston.Logger)({
     ]
 });
 
+import user from '../models/user.js';
+
 export function startServer() {
     const server = restify.createServer({
         "name": "Rytmi API"
