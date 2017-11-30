@@ -1,6 +1,7 @@
 'use strict';
 require('dotenv').config();
 
+let schema = require('bookshelf-schema');
 let client = require("knex");
 let knex;
 
@@ -20,10 +21,12 @@ else {
         client: 'sqlite3',
         connection: {
             filename: "./rytmidev.sqlite"
-        }
+        },
+        useNullAsDefault: true
     });
 }
 
 let Bookshelf = require('bookshelf')(knex);
 Bookshelf.plugin('registry');
+Bookshelf.plugin(schema);
 module.exports = Bookshelf;
