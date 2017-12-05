@@ -16,6 +16,8 @@ let User = db.Model.extend({
         fields.EmailField('email', { required: true }),
         fields.StringField('phone'),
         fields.DateField('birthday'),
+        fields.BooleanField('active', { required: true }),
+        fields.BooleanField('admin', { required: true }),
         fields.EncryptedStringField('password', { minlength: 8, maxlength: 64 })
     ]
 });

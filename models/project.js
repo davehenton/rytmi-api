@@ -27,6 +27,7 @@ let Project = db.Model.extend({
             fields.StringField('name', { minlength: 5, maxlength: 64 }),
             fields.StringField('description', { maxlength: 4096 }),
             fields.DateField('beginning', { required: true }),
+            fields.StringField('location'),
             fields.IntField('neededPeople'),
             fields.DateField('end'),
             fields.BooleanField('internal'),

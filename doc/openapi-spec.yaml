@@ -1,0 +1,318 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Rytmi Codento Management System
+  license:
+    name: MIT
+servers:
+  - url: https://rytmi.codento.fi/v1
+paths:
+  /users:
+    get:
+      summary: List all users
+      operationId: listUsers
+      tags:
+        - users
+      parameters:
+      responses:
+        '200':
+          description: An array of users for admins
+          headers:
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Users"
+        '403':
+          description: Not authorized error
+          headers:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: User and profile creation for admins
+      operationId: createUser
+      parameters:
+        requestBody:
+          description: User to add
+          required: true
+          content:
+            application/json:
+              schema:
+                "#/components/schemas/User"
+      tags:
+        - users
+      responses:
+        '201':
+          description: Created user and profile
+          headers:
+          content:
+            application/json:
+              schema:
+                "#/components/schemas/User"
+        '403':
+          description: Not authorized error
+          headers:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '409':
+          description: User with specified username already exists
+          headers:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /users/{userId}:
+    get:
+      summary: Information of a specific user
+      operationId: showUserById
+      tags:
+        - users
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The id of the user to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '403':
+          description: Not authorized error
+          headers:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Modify user information
+      operationId: modifyUser
+      tags:
+        - users
+      parameters:
+        requestBody:
+          description: | 
+            New user information, only the parts that are changed.
+            Admin users can change user password without knowing the original,
+            but user needs to specify old password in oldPassword parameter as
+            part of the submitted user object.
+
+            In addition, only admins can modify whether the user is active or not.
+          required: true
+          content:
+            application/json:
+              schema:
+                "#/components/schemas/User"
+      responses:
+        '200':
+          description: Modified user
+          headers:
+          content:
+            application/json:
+              schema:
+                "#/components/schemas/User"
+        '403':
+          description: Not authorized
+          headers:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '404':
+          description: User does not exist
+          headers:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '409':
+          description: User with specified username already exists
+          headers:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /profiles:
+    get:
+      summary: List all active profiles
+      operationId: listProfiles
+      tags:
+        - profiles
+      parameters:
+      responses:
+        '200':
+          description: An array of profiles
+          headers:
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Profile"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /profiles/all:
+    get:
+      summary: List all profiles
+      operationId: listAllProfiles
+      tags:
+        - profiles
+      parameters:
+      responses:
+        '200':
+          description: An array of all profiles for admins
+          headers:
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Profile"
+        '403':
+          description: Not authorized error
+          headers:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /profiles/{profileId}:
+    get:
+    put:
+  /profiles/{profileId}/skills:
+    get:
+    post:
+  /profiles/{profileId}/skills/{skillId}:
+    get:
+    put:
+    delete:
+  
+  /clients:
+    get:
+    post:
+  /clients/{clientId}:
+    get:
+    put:
+  
+  /projects:
+    get:
+    post:
+  /projects/current:
+    get:
+  /projects/{projectId}:
+    get:
+    put:
+  /projects/{projectId}/skills:
+    get:
+    post:
+  /projects/{projectId}/skills/{skillId}:
+    get:
+    put:
+    delete:
+  /projects/{projectId}/profiles:
+    get:
+    post:
+  /projects/{projectId}/profiles/current:
+    get:
+  /projects/{projectId}/profiles/{profileId}:
+    get:
+    put:
+  
+  /skills:
+    get:
+    post:
+  /skills/{skillId}:
+    get:
+    put:
+
+components:
+  schemas:
+    User:
+      required:
+        - id
+        - username
+        - password (only when changing or creating user, never returned)
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        birthday:
+          type: date
+        active:
+          type: boolean
+
+    Users:
+      type: array
+      items:
+        $ref: "#/components/schemas/User"
+    
+    Profile:
+    Profiles:
+
+    Skill:
+    Skills:
+
+    Client:
+    Clients:
+
+    Project:
+    Projects:
+
+    ProjectHour:
+    ProjectHours:
+
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

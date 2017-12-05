@@ -23,7 +23,8 @@ let Profile = db.Model.extend({
         fields.StringField('title', { minlength: 5, maxlength: 64 }),
         fields.StringField('description', { minlength: 32, maxlength: 2048 }),
         fields.StringField('ext_resume_url', { validurl: true }),
-        fields.StringField('photo_path')
+        fields.StringField('photo_path'),
+        fields.BooleanField('active', { required: true })
     ]
 });
 
