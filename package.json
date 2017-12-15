@@ -13,6 +13,7 @@
         "test": "mocha",
         "coverage": "node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register --colors --reporter dot test/*.js",
         "testwatch": "mocha --no-exit --watch --reporter min test/02-test-users.js",
+        "create-html-doc": "node node_modules/spectacle-docs/bin/spectacle.js -t doc/ doc/openapi-spec.json",
         "db": "NODE_ENV=development bin/setup-db.sh",
         "resetdb": "NODE_ENV=development babel-node bin/initdb.js",
         "containers": "docker-compose up -d && echo Rytmi API is now up & running.",
@@ -38,6 +39,7 @@
         "mocha": "^4.0.1",
         "nodemon": "^1.12.1",
         "restify-clients": "^1.5.2",
-        "sqlite3": "^3.1.13"
+        "sqlite3": "^3.1.13",
+        "spectacle-docs": "^0.9.13"
     }
 }

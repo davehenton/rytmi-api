@@ -79,7 +79,7 @@ paths:
 
   /users/{userId}:
     get:
-      summary: Information of a specific user
+      summary: Show specific user
       operationId: showUserById
       tags:
         - users
@@ -104,12 +104,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
     put:
       summary: Modify user information
       operationId: modifyUser
@@ -117,10 +111,7 @@ paths:
         - users
       parameters:
         requestBody:
-          description: | 
-            New user information, only the parts that are changed.
-
-            In addition, only admins can modify whether the user is active or not.
+          description: New user information, only the parts that are changed.
           required: true
           content:
             application/json:
@@ -176,7 +167,7 @@ paths:
           content:
             application/json:    
               schema:
-                $ref: "#/components/schemas/Profile"
+                $ref: "#/components/schemas/Profiles"
         default:
           description: unexpected error
           content:
@@ -197,7 +188,80 @@ paths:
           content:
             application/json:    
               schema:
+                $ref: "#/components/schemas/Profiles"
+  /profiles/{profileId}:
+    get:
+      summary: Show single profile
+      operationId: showProfile
+      tags:
+        - profiles
+      parameters:
+      responses:
+        '200':
+          description: Profile information
+          headers:
+          content:
+            application/json:    
+              schema:
                 $ref: "#/components/schemas/Profile"
+    put:
+      summary: Modify profile
+      operationId: modifyProfile
+      tags:
+        - profiles
+      parameters:
+        requestBody:
+          description: New profile information, only the parts that are changed.
+          required: true
+          content:
+            application/json:
+              schema:
+                "#/components/schemas/Profile"
+      responses:
+        '200':
+          description: Full object containing updated profile
+          headers:
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/Profile"
+
+  /profiles/{profileId}/skills:
+    get:
+      summary: Show profile's skills 
+      operationId: showProfileSkills
+      tags:
+        - profileskills
+      parameters:
+      responses:
+        '200':
+          description: Array containing profile's skills
+          headers:
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ProfileSkills"
+    post:
+      summary: Add new skill to profile
+      operationId: addProfileSkill
+      parameters:
+        requestBody:
+          description: Skill to add to profile
+          required: true
+          content:
+            application/json:
+              schema:
+                "#/components/schemas/User"
+      tags:
+        - profileskills
+      responses:
+        '201':
+          description: Created user and profile
+          headers:
+          content:
+            application/json:
+              schema:
+                "#/components/schemas/User"
         '403':
           description: Not authorized error
           headers:
@@ -205,25 +269,83 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        default:
-          description: unexpected error
+        '404':
+          description: Specified skill does not exist
+          headers:
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /profiles/{profileId}:
-    get:
-    put:
-  /profiles/{profileId}/skills:
-    get:
-    post:
+        '409':
+          description: Specified skill already exists
+          headers:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /profiles/{profileId}/skills/{skillId}:
     get:
+      summary: Show single profile-skill
+      operationId: showProfileSkill
+      tags:
+        - profileskills
+      parameters:
+      responses:
+        '200':
+          description: Profile-skill information
+          headers:
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ProfileSkill"
     put:
+      summary: Modify profileskill
+      operationId: modifyProfileSkill
+      tags:
+        - profileskills
+      parameters:
+        requestBody:
+          description: New profile-skill information.
+          required: true
+          content:
+            application/json:
+              schema:
+                "#/components/schemas/Profile"
+      responses:
+        '200':
+          description: Full object containing updated profile-skill
+          headers:
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ProfileSkill"
     delete:
+      summary: Delete profile-skill
+      operationId: deleteProfileSkill
+      tags:
+        - profileskills
+      parameters:
+      responses:
+        '204':
+          description: Confirmation that profile-skill was deleted
+          headers:
+
   /profiles/{profileId}/projects:
     get:
-  
+      summary: Show project-profiles related to specified profile
+      operationId: showProfileProjects
+      tags:
+        - projectprofiles
+      parameters:
+      responses:
+        '200':
+          description: Project-profiles in array
+          headers:
+          content:
+            application/json:    
+              schema:
+                $ref: "#/components/schemas/ProjectProfiles"
+
   /clients:
     get:
     post:
@@ -292,24 +414,45 @@ components:
     
     Profile:
     Profiles:
+      type: array
+      items:
+        $ref: "#/components/schemas/Profile"
 
     Skill:
     Skills:
+      type: array
+      items:
+        $ref: "#/components/schemas/Skill"
 
     ProfileSkill:
     ProfileSkills:
+      type: array
+      items:
+        $ref: "#/components/schemas/ProfileSkill"
 
     Client:
     Clients:
+      type: array
+      items:
+        $ref: "#/components/schemas/Client"
 
     Project:
     Projects:
+      type: array
+      items:
+        $ref: "#/components/schemas/Project"
 
     ProjectProfile:
     ProjectProfiles:
+      type: array
+      items:
+        $ref: "#/components/schemas/ProjectProfile"
 
     ProjectHour:
     ProjectHours:
+      type: array
+      items:
+        $ref: "#/components/schemas/ProjectHour"
 
     Error:
       required:
