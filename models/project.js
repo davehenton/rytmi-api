@@ -3,7 +3,7 @@ let fields = require('bookshelf-schema/lib/fields');
 
 let db = require('./database');
 require('./client');
-require('./profile-project');
+require('./project-profile');
 require('./project-skill');
 require('./projecthour');
 let Project = db.Model.extend({
@@ -11,7 +11,7 @@ let Project = db.Model.extend({
     hasTimestamps: true,
 
     profiles: () => {
-        return this.hasMany('ProfileProject');
+        return this.hasMany('ProjectProfile');
     },
     skills: () => {
         return this.hasMany('ProjectSkill');
