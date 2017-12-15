@@ -119,9 +119,6 @@ paths:
         requestBody:
           description: | 
             New user information, only the parts that are changed.
-            Admin users can change user password without knowing the original,
-            but user needs to specify old password in oldPassword parameter as
-            part of the submitted user object.
 
             In addition, only admins can modify whether the user is active or not.
           required: true
@@ -224,6 +221,8 @@ paths:
     get:
     put:
     delete:
+  /profiles/{profileId}/projects:
+    get:
   
   /clients:
     get:
@@ -297,11 +296,17 @@ components:
     Skill:
     Skills:
 
+    ProfileSkill:
+    ProfileSkills:
+
     Client:
     Clients:
 
     Project:
     Projects:
+
+    ProjectProfile:
+    ProjectProfiles:
 
     ProjectHour:
     ProjectHours:
