@@ -19,7 +19,7 @@ import user from '../models/user.js';
 
 export function startServer() {
     const server = restify.createServer({
-        "name": "Rytmi API"
+        name: 'Rytmi API'
     });
 
     server.use(restify.plugins.acceptParser(server.acceptable));
@@ -27,19 +27,11 @@ export function startServer() {
     server.use(restify.plugins.queryParser({ mapParams: true }));
     server.use(restify.plugins.authorizationParser());
 
-    server.pre((req, res, next) => {
-        req.log = logger;
-        
-        // req.log.info({req: req}, 'start'); // for query debugging
-        return next();
-    })
-
     server.get('/', (req, res, next) => { // debug
-        req.log.info('GET request to', req.url, 'from', req.headers['x-forwarded-for'] || req.connection.remoteAddress);
+        logger.info('GET request to', req.url, 'from', req.headers['x-forwarded-for'] || req.connection.remoteAddress);
     });
 
     server.listen(process.env.PORT || 8080, process.env.IP || "0.0.0.0", () =>
         logger.info('%s server listening at %s', server.name, server.url)
     )
 }
-
