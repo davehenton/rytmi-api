@@ -1,18 +1,17 @@
-'use strict';
-let fields = require('bookshelf-schema/lib/fields');
+let fields = require('bookshelf-schema/lib/fields')
+let db = require('./database')
+require('./project')
+require('./profile')
 
-let db = require('./database');
-require('./project');
-require('./profile');
 let ProjectHour = db.Model.extend({
   tableName: 'projecthours',
   hasTimestamps: true,
 
   profile: () => {
-    return this.belongsTo('Profile');
+    return this.belongsTo('Profile')
   },
   project: () => {
-    return this.belongsTo('Project');
+    return this.belongsTo('Project')
   }
 }, {
   schema: [
@@ -20,6 +19,6 @@ let ProjectHour = db.Model.extend({
     fields.IntField('minutes', { max: 1440 }),
     fields.StringField('description', { maxlength: 1024 })
   ]
-});
+})
 
-module.exports = db.model('ProjectHour', ProjectHour);
+module.exports = db.model('ProjectHour', ProjectHour)

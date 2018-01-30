@@ -1,18 +1,17 @@
-'use strict';
-let fields = require('bookshelf-schema/lib/fields');
+let fields = require('bookshelf-schema/lib/fields')
+let db = require('./database')
+require('./profile')
+require('./project')
 
-let db = require('./database');
-require('./profile');
-require('./project');
 let ProjectProfile = db.Model.extend({
   tableName: 'projects-profiles',
   hasTimestamps: true,
 
   profile: () => {
-    return this.belongsTo('Profile');
+    return this.belongsTo('Profile')
   },
   project: () => {
-    return this.belongsTo('Project');
+    return this.belongsTo('Project')
   }
 }, {
   schema: [
@@ -21,6 +20,6 @@ let ProjectProfile = db.Model.extend({
     fields.DateField('beginning', { required: true }),
     fields.DateField('end')
   ]
-});
+})
 
-module.exports = db.model('ProjectProfile', ProjectProfile);
+module.exports = db.model('ProjectProfile', ProjectProfile)

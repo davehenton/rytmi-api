@@ -1,26 +1,25 @@
-'use strict';
-let fields = require('bookshelf-schema/lib/fields');
+let fields = require('bookshelf-schema/lib/fields')
+let db = require('./database')
+require('./client')
+require('./project-profile')
+require('./project-skill')
+require('./projecthour')
 
-let db = require('./database');
-require('./client');
-require('./project-profile');
-require('./project-skill');
-require('./projecthour');
 let Project = db.Model.extend({
   tableName: 'projects',
   hasTimestamps: true,
 
   profiles: () => {
-    return this.hasMany('ProjectProfile');
+    return this.hasMany('ProjectProfile')
   },
   skills: () => {
-    return this.hasMany('ProjectSkill');
+    return this.hasMany('ProjectSkill')
   },
   client: () => {
-    return this.belongsToOne('Client');
+    return this.belongsToOne('Client')
   },
   hours: () => {
-    return this.hasMany('ProjectHour');
+    return this.hasMany('ProjectHour')
   }
 }, {
   schema: [
@@ -35,6 +34,6 @@ let Project = db.Model.extend({
     fields.StringField('internalContact'),
     fields.StringField('internalTechnicalContact')
   ]
-});
+})
 
-module.exports = db.model('Project', Project);
+module.exports = db.model('Project', Project)

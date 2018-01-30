@@ -1,23 +1,22 @@
-'use strict';
-let fields = require('bookshelf-schema/lib/fields');
+let fields = require('bookshelf-schema/lib/fields')
+let db = require('./database')
+require('./user')
+require('./profile-skill')
+require('./project-profile')
+require('./projecthour')
 
-let db = require('./database');
-require('./user');
-require('./profile-skill');
-require('./project-profile');
-require('./projecthour');
 let Profile = db.Model.extend({
   tableName: 'profiles',
   hasTimestamps: true,
 
   user: () => {
-    return this.belongsTo('User');
+    return this.belongsTo('User')
   },
   skills: () => {
-    return this.hasMany('ProfileSkill');
+    return this.hasMany('ProfileSkill')
   },
   hours: () => {
-    return this.hasMany('ProjectHour');
+    return this.hasMany('ProjectHour')
   }
 }, {
   schema: [
@@ -27,6 +26,6 @@ let Profile = db.Model.extend({
     fields.StringField('photo_path'),
     fields.BooleanField('active', { required: true })
   ]
-});
+})
 
-module.exports = db.model('Profile', Profile);
+module.exports = db.model('Profile', Profile)

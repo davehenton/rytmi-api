@@ -1,9 +1,8 @@
-'use strict';
-require('dotenv').config();
+require('dotenv').config()
 
-let schema = require('bookshelf-schema');
-let client = require('knex');
-let knex;
+let schema = require('bookshelf-schema')
+let client = require('knex')
+let knex
 
 knex = client({
   client: 'pg',
@@ -13,9 +12,9 @@ knex = client({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME
   }
-});
+})
 
-let Bookshelf = require('bookshelf')(knex);
-Bookshelf.plugin('registry');
-Bookshelf.plugin(schema);
-module.exports = Bookshelf;
+let Bookshelf = require('bookshelf')(knex)
+Bookshelf.plugin('registry')
+Bookshelf.plugin(schema)
+module.exports = Bookshelf

@@ -1,14 +1,13 @@
-'use strict';
-let fields = require('bookshelf-schema/lib/fields');
+let fields = require('bookshelf-schema/lib/fields')
+let db = require('./database')
+require('./profile')
 
-let db = require('./database');
-require('./profile');
 let User = db.Model.extend({
   tableName: 'users',
   hasTimestamps: true,
 
   profile: function () {
-    return this.hasOne('Profile');
+    return this.hasOne('Profile')
   }
 }, {
   schema: [
@@ -20,6 +19,6 @@ let User = db.Model.extend({
     fields.BooleanField('admin', { required: true }),
     fields.EncryptedStringField('password', { minlength: 8, maxlength: 64 })
   ]
-});
+})
 
-module.exports = db.model('User', User);
+module.exports = db.model('User', User)

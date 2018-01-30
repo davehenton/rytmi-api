@@ -1,18 +1,17 @@
-'use strict';
-let fields = require('bookshelf-schema/lib/fields');
+let fields = require('bookshelf-schema/lib/fields')
+let db = require('./database')
+require('./profile')
+require('./skill')
 
-let db = require('./database');
-require('./profile');
-require('./skill');
 let ProfileSkill = db.Model.extend({
   tableName: 'profiles-skills',
   hasTimestamps: true,
 
   profile: () => {
-    return this.belongsTo('Profile');
+    return this.belongsTo('Profile')
   },
   skill: () => {
-    return this.belongsTo('Skill');
+    return this.belongsTo('Skill')
   }
 }, {
   schema: [
@@ -21,6 +20,6 @@ let ProfileSkill = db.Model.extend({
     fields.BooleanField('visibleInCV'),
     fields.StringField('description', { maxlength: 1024 })
   ]
-});
+})
 
-module.exports = db.model('ProfileSkill', ProfileSkill);
+module.exports = db.model('ProfileSkill', ProfileSkill)
