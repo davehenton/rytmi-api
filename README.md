@@ -41,6 +41,12 @@ Migrate to latest version:
 knex migrate:latest
 ```
 
+(Re)generate test data and insert it to the database:
+
+```
+knex seed:run
+```
+
 ### Making changes to the database
 
 Create a new migration script:
@@ -49,7 +55,9 @@ Create a new migration script:
 knex migrate:make migration_name_here
 ```
 
-This will create a new script under the `migrations` folder. Make your changes to the tables in the `up` function. The `down` function is used for rollbacks, it should undo the `up` function.
+This will create a new script under the `db/migrations` folder. Make your changes to the tables in the `up` function. The `down` function is used for rollbacks, it should undo the `up` function.
+
+Update the test data seed under `db/seeds` to reflect the changes, then regenerate and reimport it.
 
 ### Doc generation
 
