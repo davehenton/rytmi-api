@@ -8,7 +8,7 @@
 
 ## Development
 
-### Database
+### Development database
 
 Use the Postgres Docker image:
 
@@ -16,9 +16,9 @@ Use the Postgres Docker image:
 docker run -d --name rytmi-dev-db -p 5432:5432 -e POSTGRES_DB=rytmi -e POSTGRES_PASSWORD=rytmi -e POSTGRES_USER=rytmi postgres:10.1
 ```
 
-### Environment variables
+### Setting environment variables
 
-Create a .env file in the project root directory. Example for the aforementioned dev database:
+Create a `.env` file in the project root directory. Example using the aforementioned dev database:
 
 ```
 DB_HOST=localhost
@@ -26,6 +26,30 @@ DB_USER=rytmi
 DB_PASSWORD=rytmi
 DB_NAME=rytmi
 ```
+
+### Setting up the database / migrating to the latest version
+
+For migrations you must have Knex installed globally:
+
+```
+npm install knex -g
+```
+
+Migrate to latest version:
+
+```
+knex migrate:latest
+```
+
+### Making changes to the database
+
+Create a new migration script:
+
+```
+knex migrate:make migration_name_here
+```
+
+This will create a new script under the `migrations` folder. Make your changes to the tables in the `up` function. The `down` function is used for rollbacks, it should undo the `up` function.
 
 ### Doc generation
 

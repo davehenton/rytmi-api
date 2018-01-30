@@ -4,7 +4,7 @@ require('./profile')
 require('./skill')
 
 let ProfileSkill = db.Model.extend({
-  tableName: 'profiles-skills',
+  tableName: 'profiles_skills',
   hasTimestamps: true,
 
   profile: () => {
