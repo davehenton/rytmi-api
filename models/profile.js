@@ -2,8 +2,6 @@ let fields = require('bookshelf-schema/lib/fields')
 let db = require('./database')
 require('./user')
 require('./profile-skill')
-require('./project-profile')
-require('./projecthour')
 
 let Profile = db.Model.extend({
   tableName: 'profiles',
@@ -14,9 +12,6 @@ let Profile = db.Model.extend({
   },
   skills: () => {
     return this.hasMany('ProfileSkill')
-  },
-  hours: () => {
-    return this.hasMany('ProjectHour')
   }
 }, {
   schema: [
