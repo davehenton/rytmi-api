@@ -25,6 +25,8 @@ DB_HOST=localhost
 DB_USER=rytmi
 DB_PASSWORD=rytmi
 DB_NAME=rytmi
+
+PORT=8081
 ```
 
 ### Setting up the database / migrating to the latest version

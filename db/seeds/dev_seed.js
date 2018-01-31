@@ -25,7 +25,7 @@ factory.define('profile')
   .attr('user_id')
   .attr('title', () => { return faker.name.findName() })
   .attr('description', () => { return faker.lorem.paragraphs() })
-  .attr('links', () => { return [] })
+  .attr('links')
   .attr('photo_path', () => { return faker.internet.avatar() })
   .attr('active', () => { return faker.random.boolean() })
 
@@ -55,14 +55,19 @@ for (let i = 0; i < items; i++) {
   let user = factory.build('user')
   db.users.push(user)
 
-  let profile = factory.build('profile', { user_id: user.id })
+  let links = []
   for (let j = 0; j < faker.random.number(5); j++) {
-    profile.links.push(faker.internet.url)
+    links.push(faker.internet.url())
   }
+  let profile = factory.build('profile', {
+    user_id: user.id,
+    links: JSON.stringify(links) // http://knexjs.org/#Schema-json
+  })
   db.profiles.push(profile)
 
   let randomSkills = []
-  while (randomSkills.length < faker.random.number(5)) {
+  let amount = faker.random.number(5)
+  while (randomSkills.length < amount) {
     let skill = db.skills[Math.floor(Math.random() * db.skills.length)]
     if (randomSkills.indexOf(skill) > -1) continue
     else randomSkills.push(skill)
