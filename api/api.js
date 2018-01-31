@@ -1,6 +1,9 @@
 import { version } from '../package.json'
 import { Router } from 'express'
 import winston from 'winston'
+import profiles from './profiles'
+import skills from './skills'
+import users from './users'
 
 require('dotenv').config()
 
@@ -22,6 +25,10 @@ export default () => {
     logger.info('GET request to', req.url, 'from', req.headers['x-forwarded-for'] || req.connection.remoteAddress)
     res.json({ version })
   })
+
+  api.use('/profiles', profiles())
+  api.use('/skills', skills())
+  api.use('/users', users())
 
   return api
 }
