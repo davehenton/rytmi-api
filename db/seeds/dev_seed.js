@@ -66,7 +66,8 @@ for (let i = 0; i < items; i++) {
   db.profiles.push(profile)
 
   let randomSkills = []
-  while (randomSkills.length < faker.random.number(5)) {
+  let amount = faker.random.number(5)
+  while (randomSkills.length < amount) {
     let skill = db.skills[Math.floor(Math.random() * db.skills.length)]
     if (randomSkills.indexOf(skill) > -1) continue
     else randomSkills.push(skill)
