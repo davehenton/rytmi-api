@@ -12,6 +12,8 @@ let User = db.Model.extend({
 }, {
   schema: [
     fields.StringField('username', { required: true, minlength: 2, maxlength: 64 }),
+    fields.StringField('lastName', { required: true }),
+    fields.StringField('firstName', { required: true }),
     fields.EmailField('email', { required: true }),
     fields.StringField('phone'),
     fields.DateField('birthday'),
