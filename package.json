@@ -8,14 +8,12 @@
   },
   "main": "api/index.js",
   "scripts": {
-    "start": "nodemon",
+    "start": "nodemon -w api --exec \"babel-node api --presets es2015,es2017\"",
     "build": "docker-compose build",
     "test": "mocha",
     "coverage": "node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register --colors --reporter dot test/*.js",
     "testwatch": "mocha --no-exit --watch --reporter min test/02-test-users.js",
     "create-html-doc": "node node_modules/spectacle-docs/bin/spectacle.js -t doc/ doc/openapi-spec.json",
-    "db": "NODE_ENV=development bin/setup-db.sh",
-    "resetdb": "NODE_ENV=development babel-node bin/initdb.js",
     "containers": "docker-compose up -d && echo Rytmi API is now up & running.",
     "stop": "docker-compose down"
   },
@@ -27,9 +25,9 @@
     "bookshelf-json-columns": "^2.1.1",
     "bookshelf-schema": "^0.3.6",
     "dotenv": "^4.0.0",
+    "express": "^4.16.2",
     "knex": "^0.13.0",
     "pg": "^7.4.1",
-    "restify": "^6.3.4",
     "winston": "^2.4.0"
   },
   "devDependencies": {
