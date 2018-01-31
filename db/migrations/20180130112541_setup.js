@@ -17,7 +17,7 @@ exports.up = function (knex, Promise) {
       table.integer('user_id').references('users.id')
       table.string('title', 64)
       table.text('description')
-      table.text('links')
+      table.json('links')
       table.string('photo_path')
       table.boolean('active').notNullable()
     }),

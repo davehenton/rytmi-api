@@ -20,7 +20,8 @@ let Profile = db.Model.extend({
     fields.StringField('links'),
     fields.StringField('photo_path'),
     fields.BooleanField('active', { required: true })
-  ]
+  ],
+  jsonColumns: ['links']
 })
 
 module.exports = db.model('Profile', Profile)

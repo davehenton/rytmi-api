@@ -15,6 +15,8 @@ knex = client({
 })
 
 let Bookshelf = require('bookshelf')(knex)
+let jsonColumns = require('bookshelf-json-columns');
 Bookshelf.plugin('registry')
 Bookshelf.plugin(schema)
+Bookshelf.plugin(jsonColumns)
 module.exports = Bookshelf
