@@ -1,32 +1,35 @@
-import Profile from '../../models/profile'
+import models from '../../db/models'
 
 module.exports = {
   getActive: () => {
-    return Profile
-      .where({active: true})
-      .fetchAll()
+    return models.Profile
+      .findAll({where: {active: true}})
   },
 
   getAll: () => {
-    return Profile
-      .fetchAll()
+    return models.Profile
+      .findAll()
   },
 
   get: (id) => {
-    return Profile
-      .where({id})
-      .fetch()
+    return models.Profile
+      .findById(id)
+  },
+
+  create: (attrs) => {
+    delete attrs.id
+    return models.Profile
+      .build(attrs)
+      .save()
   },
 
   update: (id, attrs) => {
-    return Profile
-      .forge({id})
-      .fetch()
-      .then(user => {
-        return user
-          .set(attrs)
-          .set({id})
-          .save()
+    attrs.id = id
+    delete attrs.userId
+    return models.Profile
+      .findById(id)
+      .then(profile => {
+        return profile.update(attrs)
       })
   }
 }
