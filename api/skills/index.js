@@ -8,12 +8,18 @@ export default () => {
       .then(skills => {
         res.json(skills)
       })
+      .catch(err => {
+        res.status(500).json(err)
+      })
   })
 
   router.get('/:id', (req, res) => {
     skills.get(req.params.id)
       .then(skill => {
         res.json(skill)
+      })
+      .catch(err => {
+        res.status(500).json(err)
       })
   })
 

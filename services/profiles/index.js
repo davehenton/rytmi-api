@@ -5,25 +5,28 @@ module.exports = {
     return Profile
       .where({active: true})
       .fetchAll()
-      .then(profiles => {
-        return profiles
-      })
   },
 
   getAll: () => {
     return Profile
       .fetchAll()
-      .then(profiles => {
-        return profiles
-      })
   },
 
   get: (id) => {
     return Profile
       .where({id})
       .fetch()
-      .then(profile => {
-        return profile
+  },
+
+  update: (id, attrs) => {
+    return Profile
+      .forge({id})
+      .fetch()
+      .then(user => {
+        return user
+          .set(attrs)
+          .set({id})
+          .save()
       })
   }
 }

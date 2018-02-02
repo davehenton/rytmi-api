@@ -1,6 +1,8 @@
 import { version } from '../package.json'
 import { Router } from 'express'
 import winston from 'winston'
+import bodyParser from 'body-parser'
+
 import profiles from './profiles'
 import skills from './skills'
 import users from './users'
@@ -20,6 +22,7 @@ const logger = new (winston.Logger)({
 
 export default () => {
   let api = Router()
+  api.use(bodyParser.json())
 
   api.get('/', (req, res) => {
     logger.info('GET request to', req.url, 'from', req.headers['x-forwarded-for'] || req.connection.remoteAddress)

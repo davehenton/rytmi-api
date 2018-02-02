@@ -16,8 +16,8 @@ let ProfileSkill = db.Model.extend({
 }, {
   schema: [
     fields.IntField('knows', { greaterThanEqualTo: 0, lessThanEqualto: 5 }),
-    fields.IntField('wantsTo', { greaterThanEqualTo: 0, lessThanEqualto: 5 }),
-    fields.BooleanField('visibleInCV'),
+    fields.IntField('wants_to', { greaterThanEqualTo: 0, lessThanEqualto: 5 }),
+    fields.BooleanField('visible_in_cv', { required: true }),
     fields.StringField('description', { maxlength: 1024 })
   ]
 })
