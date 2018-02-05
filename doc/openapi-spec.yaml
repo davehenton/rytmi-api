@@ -19,7 +19,7 @@ paths:
           description: An array of users for admins
           headers:
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/Users"
         '403':
@@ -36,7 +36,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     post:
-      summary: User and profile creation for admins
+      summary: User creation for admins
       operationId: createUser
       parameters:
         requestBody:
@@ -45,12 +45,12 @@ paths:
           content:
             application/json:
               schema:
-                "#/components/schemas/User"
+                $ref: "#/components/schemas/User"
       tags:
         - users
       responses:
         '201':
-          description: Created user and profile
+          description: Created user
           headers:
           content:
             application/json:
@@ -165,7 +165,7 @@ paths:
           description: An array of profiles
           headers:
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/Profiles"
         default:
@@ -174,6 +174,47 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+    post:
+      summary: User creation for admins
+      operationId: createUser
+      parameters:
+        requestBody:
+        description: User to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      tags:
+        - users
+      responses:
+        '201':
+          description: Created user
+          headers:
+          content:
+          application/json:
+          schema:
+            "#/components/schemas/User"
+          '403':
+            description: Not authorized error
+            headers:
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+          '409':
+            description: User with specified username already exists
+            headers:
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+          default:
+            description: Unexpected error
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
   /profiles/all:
     get:
       summary: List all profiles
@@ -186,7 +227,7 @@ paths:
           description: An array of all profiles for admins
           headers:
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/Profiles"
   /profiles/{profileId}:
@@ -201,7 +242,7 @@ paths:
           description: Profile information
           headers:
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/Profile"
     put:
@@ -222,13 +263,13 @@ paths:
           description: Full object containing updated profile
           headers:
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/Profile"
 
   /profiles/{profileId}/skills:
     get:
-      summary: Show profile's skills 
+      summary: Show profile's skills
       operationId: showProfileSkills
       tags:
         - profileskills
@@ -238,7 +279,7 @@ paths:
           description: Array containing profile's skills
           headers:
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/ProfileSkills"
     post:
@@ -295,7 +336,7 @@ paths:
           description: Profile-skill information
           headers:
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/ProfileSkill"
     put:
@@ -316,7 +357,7 @@ paths:
           description: Full object containing updated profile-skill
           headers:
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/ProfileSkill"
     delete:
@@ -342,7 +383,7 @@ paths:
           description: Project-profiles in array
           headers:
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/ProjectProfiles"
 
@@ -352,7 +393,7 @@ paths:
   /clients/{clientId}:
     get:
     put:
-  
+
   /projects:
     get:
     post:
@@ -376,7 +417,7 @@ paths:
   /projects/{projectId}/profiles/{profileId}:
     get:
     put:
-  
+
   /skills:
     get:
     post:
@@ -411,7 +452,7 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/User"
-    
+
     Profile:
     Profiles:
       type: array
