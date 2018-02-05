@@ -31,35 +31,43 @@ PORT=8081
 
 ### Setting up the database / migrating to the latest version
 
-For migrations you must have Knex installed globally:
+For migrations you must use sequelize-cli. Run it from under node_modules or install it globally:
 
 ```
-npm install knex -g
+npm install sequelize-cli -g
 ```
 
 Migrate to latest version:
 
 ```
-knex migrate:latest
+sequelize db:migrate
 ```
 
 (Re)generate test data and insert it to the database:
 
 ```
-knex seed:run
+sequelize db:seed:all
 ```
 
 ### Making changes to the database
 
-Create a new migration script:
+Create a migration script:
 
 ```
-knex migrate:make migration_name_here
+sequelize migration:create --name migration_name_here
 ```
 
 This will create a new script under the `db/migrations` folder. Make your changes to the tables in the `up` function. The `down` function is used for rollbacks, it should undo the `up` function.
 
-Update the test data seed under `db/seeds` to reflect the changes, then regenerate and reimport it.
+Update the test data seeder under `db/seeders` if required.
+
+If you are adding a new model, the command
+
+```
+sequelize model:create --name ModelName --attributes "attr1:string, attr2:boolean"
+```
+
+will add a new model under `db/models` and the migration file for that model. You will probably have to make changes to these (not null-constraints etc.) before running the migration.
 
 ### Doc generation
 

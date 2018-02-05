@@ -1,48 +1,44 @@
-import ProfileSkill from '../../models/profile-skill'
+import models from '../../db/models'
 
 module.exports = {
   getByProfileId: (profileId) => {
-    return ProfileSkill
-      .where({profile_id: profileId})
-      .fetchAll()
+    return models.ProfileSkill
+      .findAll({where: {profileId: profileId}})
   },
 
   get: (id) => {
-    return ProfileSkill
-      .where({id})
-      .fetch()
+    return models.ProfileSkill
+      .findById(id)
   },
 
   create: (profileId, attrs) => {
-    return ProfileSkill
-      .forge(attrs)
-      .set('profile_id', profileId)
-      .unset('id')
+    delete attrs.id
+    attrs.profileId = profileId
+    return models.ProfileSkill
+      .build(attrs)
       .save()
   },
 
   update: (profileId, profileSkillId, attrs) => {
-    return ProfileSkill
-      .forge({
+    attrs.id = profileSkillId
+    attrs.profileId = profileId
+    return models.ProfileSkill
+      .findOne({where: {
         id: profileSkillId,
-        profile_id: profileId
-      })
-      .fetch()
+        profileId: profileId
+      }})
       .then(profileSkill => {
         return profileSkill
-          .set(attrs)
-          .unset('id', 'profile_id')
-          .save()
+          .update(attrs)
       })
   },
 
   delete: (profileId, profileSkillId) => {
-    return ProfileSkill
-      .forge({
+    return models.ProfileSkill
+      .findOne({where: {
         id: profileSkillId,
-        profile_id: profileId
-      })
-      .fetch()
+        profileId: profileId
+      }})
       .then(profileSkill => {
         return profileSkill
           .destroy()

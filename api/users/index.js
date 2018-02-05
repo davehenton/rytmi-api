@@ -15,8 +15,8 @@ export default () => {
 
   router.post('/', (req, res) => {
     users.create(req.body)
-      .then(userAndProfile => {
-        res.status(201).json(userAndProfile)
+      .then(user => {
+        res.status(201).json(user)
       })
       .catch(err => {
         res.status(500).json(err)
@@ -37,9 +37,6 @@ export default () => {
     users.update(req.params.id, req.body)
       .then(user => {
         res.json(user)
-      })
-      .catch(err => {
-        res.status(500).json(err)
       })
   })
 

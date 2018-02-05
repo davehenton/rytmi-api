@@ -14,6 +14,16 @@ export default () => {
       })
   })
 
+  router.post('/', (req, res) => {
+    profiles.create(req.body)
+      .then(profile => {
+        res.status(201).json(profile)
+      })
+      .catch(err => {
+        res.status(500).json(err)
+      })
+  })
+
   router.get('/all', (req, res) => {
     profiles.getAll()
       .then(profiles => {

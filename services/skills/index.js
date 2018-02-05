@@ -1,14 +1,13 @@
-import Skill from '../../models/skill'
+import models from '../../db/models'
 
 module.exports = {
   getAll: () => {
-    return Skill
-      .fetchAll()
+    return models.Skill
+      .findAll()
   },
 
   get: (id) => {
-    return Skill
-      .where({id})
-      .fetch()
+    return models.Skill
+      .findById(id)
   }
 }
