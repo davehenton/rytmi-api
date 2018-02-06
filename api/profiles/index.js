@@ -1,11 +1,11 @@
 import { Router } from 'express'
-import profiles from '../../services/profiles'
-import profileSkills from '../../services/profileSkills'
+import profileService from '../../services/profiles'
+import profileSkillService from '../../services/profileSkills'
 const router = Router()
 
 export default () => {
   router.get('/', (req, res) => {
-    profiles.getActive()
+    profileService.getActive()
       .then(profiles => {
         res.json(profiles)
       })
@@ -15,7 +15,7 @@ export default () => {
   })
 
   router.post('/', (req, res) => {
-    profiles.create(req.body)
+    profileService.create(req.body)
       .then(profile => {
         res.status(201).json(profile)
       })
@@ -25,7 +25,7 @@ export default () => {
   })
 
   router.get('/all', (req, res) => {
-    profiles.getAll()
+    profileService.getAll()
       .then(profiles => {
         res.json(profiles)
       })
@@ -35,7 +35,7 @@ export default () => {
   })
 
   router.get('/:id', (req, res) => {
-    profiles.get(req.params.id)
+    profileService.get(req.params.id)
       .then(profile => {
         res.json(profile)
       })
@@ -45,7 +45,7 @@ export default () => {
   })
 
   router.put('/:id', (req, res) => {
-    profiles.update(req.params.id, req.body)
+    profileService.update(req.params.id, req.body)
       .then(profile => {
         res.json(profile)
       })
@@ -55,7 +55,7 @@ export default () => {
   })
 
   router.get('/:id/skills', (req, res) => {
-    profileSkills.getByProfileId(req.params.id)
+    profileSkillService.getByProfileId(req.params.id)
       .then(profileSkills => {
         res.json(profileSkills)
       })
@@ -65,7 +65,7 @@ export default () => {
   })
 
   router.post('/:id/skills', (req, res) => {
-    profileSkills.create(req.params.id, req.body)
+    profileSkillService.create(req.params.id, req.body)
       .then(profileSkill => {
         res.status(201).json(profileSkill)
       })
@@ -75,7 +75,7 @@ export default () => {
   })
 
   router.get('/:id/skills/:profileSkillId', (req, res) => {
-    profileSkills.get(req.params.profileSkillId)
+    profileSkillService.get(req.params.profileSkillId)
       .then(profileSkill => {
         res.json(profileSkill)
       })
@@ -85,7 +85,7 @@ export default () => {
   })
 
   router.put('/:id/skills/:profileSkillId', (req, res) => {
-    profileSkills.update(req.params.id, req.params.profileSkillId, req.body)
+    profileSkillService.update(req.params.id, req.params.profileSkillId, req.body)
       .then(profileSkill => {
         res.json(profileSkill)
       })
@@ -95,7 +95,7 @@ export default () => {
   })
 
   router.delete('/:id/skills/:profileSkillId', (req, res) => {
-    profileSkills.delete(req.params.id, req.params.profileSkillId)
+    profileSkillService.delete(req.params.id, req.params.profileSkillId)
       .then(profileSkill => {
         res.status(204).json(profileSkill)
       })

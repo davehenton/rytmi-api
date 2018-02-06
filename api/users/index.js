@@ -1,10 +1,10 @@
 import { Router } from 'express'
-import users from '../../services/users'
+import userService from '../../services/users'
 const router = Router()
 
 export default () => {
   router.get('/', (req, res) => {
-    users.getAll()
+    userService.getAll()
       .then(users => {
         res.json(users)
       })
@@ -14,7 +14,7 @@ export default () => {
   })
 
   router.post('/', (req, res) => {
-    users.create(req.body)
+    userService.create(req.body)
       .then(user => {
         res.status(201).json(user)
       })
@@ -24,7 +24,7 @@ export default () => {
   })
 
   router.get('/:id', (req, res) => {
-    users.get(req.params.id)
+    userService.get(req.params.id)
       .then(user => {
         res.json(user)
       })
@@ -34,9 +34,12 @@ export default () => {
   })
 
   router.put('/:id', (req, res) => {
-    users.update(req.params.id, req.body)
+    userService.update(req.params.id, req.body)
       .then(user => {
         res.json(user)
+      })
+      .catch(err => {
+        res.status(500).json(err)
       })
   })
 
