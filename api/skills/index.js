@@ -1,10 +1,10 @@
 import { Router } from 'express'
-import skills from '../../services/skills'
+import skillService from '../../services/skills'
 const router = Router()
 
 export default () => {
   router.get('/', (req, res) => {
-    skills.getAll()
+    skillService.getAll()
       .then(skills => {
         res.json(skills)
       })
@@ -14,7 +14,7 @@ export default () => {
   })
 
   router.get('/:id', (req, res) => {
-    skills.get(req.params.id)
+    skillService.get(req.params.id)
       .then(skill => {
         res.json(skill)
       })

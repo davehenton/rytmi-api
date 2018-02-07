@@ -10,12 +10,15 @@
   "scripts": {
     "start": "nodemon -w api -w db -w services --exec \"babel-node api --presets es2015,es2017\"",
     "build": "docker-compose build",
-    "test": "mocha",
+    "test": "jest",
     "coverage": "node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register --colors --reporter dot test/*.js",
     "testwatch": "mocha --no-exit --watch --reporter min test/02-test-users.js",
     "create-html-doc": "node node_modules/spectacle-docs/bin/spectacle.js -t doc/ doc/openapi-spec.json",
     "containers": "docker-compose up -d && echo Rytmi API is now up & running.",
     "stop": "docker-compose down"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "author": "Antti Myyrä",
   "license": "MIT",
@@ -43,10 +46,12 @@
     "eslint-plugin-standard": "^3.0.1",
     "faker": "^4.1.0",
     "istanbul": "^0.4.5",
+    "jest": "^22.1.4",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
     "rosie": "^1.6.0",
     "sequelize-cli": "^3.2.0",
-    "spectacle-docs": "^0.9.13"
+    "spectacle-docs": "^0.9.13",
+    "sqlite3": "^3.1.13"
   }
 }
