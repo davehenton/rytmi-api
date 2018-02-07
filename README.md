@@ -8,6 +8,12 @@
 
 ## Development
 
+Install dependencies:
+
+```
+npm install
+```
+
 ### Development database
 
 Use the Postgres Docker image:
