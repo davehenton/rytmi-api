@@ -9,6 +9,7 @@
   "main": "api/index.js",
   "scripts": {
     "start": "nodemon -w api -w db -w services --exec \"babel-node api --presets es2015,es2017\"",
+    "debug": "nodemon -w api -w db -w services --inspect --exec \"babel-node api --presets es2015,es2017\"",
     "build": "docker-compose build",
     "test": "jest",
     "coverage": "node_modules/.bin/istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register --colors --reporter dot test/*.js",
