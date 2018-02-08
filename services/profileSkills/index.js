@@ -1,6 +1,11 @@
 import models from '../../db/models'
 
 module.exports = {
+  getAll: () => {
+    return models.ProfileSkill
+      .findAll()
+  },
+
   getByProfileId: (profileId) => {
     return models.ProfileSkill
       .findAll({where: {profileId: profileId}})
