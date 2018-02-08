@@ -32,6 +32,8 @@ DB_USER=rytmi
 DB_PASSWORD=rytmi
 DB_NAME=rytmi
 
+NODE_ENV=development
+
 PORT=8081
 ```
 
