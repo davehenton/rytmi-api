@@ -4,9 +4,10 @@ import winston from 'winston'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 
+import users from './users'
 import profiles from './profiles'
 import skills from './skills'
-import users from './users'
+import profileSkills from './profileSkills'
 
 require('dotenv').config()
 
@@ -30,9 +31,10 @@ export default () => {
     res.json({ version })
   })
 
+  api.use('/users', users())
   api.use('/profiles', profiles())
   api.use('/skills', skills())
-  api.use('/users', users())
+  api.use('/profileskills', profileSkills())
 
   return api
 }
