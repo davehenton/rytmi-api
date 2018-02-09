@@ -1,33 +1,52 @@
-import utils from '../utils'
+jest.mock('../../services/skills')
+
 const app = require('../../api/app')
 const request = require('supertest')(app)
 
-beforeEach(done => {
-  utils.runMigrations()
-    .then(() => utils.runSeeders()
-      .then(() => done()))
-})
+const SKILLS = [
+  {
+    'id': 1,
+    'name': 'Vue.js',
+    'description': 'Nesciunt non minima perspiciatis praesentium aperiam voluptatem.',
+    'createdAt': '2018-02-06T13:38:46.767Z',
+    'updatedAt': '2018-02-06T13:38:46.767Z'
+  },
+  {
+    'id': 2,
+    'name': 'Node.js',
+    'description': 'Esse vel qui occaecati omnis quis. Voluptatum quis et libero.',
+    'createdAt': '2018-02-06T13:38:46.767Z',
+    'updatedAt': '2018-02-06T13:38:46.767Z'
+  }
+]
 
-afterEach(done => {
-  utils.rollbackSeeders()
-    .then(() => utils.rollbackMigrations()
-      .then(() => done()))
-})
+describe('Test skills', () => {
+  beforeEach(() => {
+    require('../../services/skills').__setMockSkills(SKILLS)
+  })
 
-describe('Test sills', () => {
-  test('It should response 200 the GET method', () => {
+  it('should response 200 the GET method ', () => {
     return request
       .get('/api/skills')
       .expect(200)
   })
-  test('respond with json', () => {
+  it('should response 404 on not defined route.', () => {
+    return request
+      .get('/api/persons')
+      .expect(404)
+  })
+  it('should respond with json', () => {
     return request
       .get('/api/skills')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200)
   })
-  test.skip('post a new skill', () => { // post not yet implemented
+  /*it('should return 2 skills', async () => {
+    const response = await request.get('/api/skills')
+    expect(response.body.length).toBe(2)
+  })*/
+  it.skip('should create a new skill', () => { // post not yet implemented
     let skill = {
       'name': 'Testing',
       'description': 'This is a test skill'
