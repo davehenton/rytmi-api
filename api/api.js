@@ -2,7 +2,6 @@ import { version } from '../package.json'
 import { Router } from 'express'
 import winston from 'winston'
 import bodyParser from 'body-parser'
-import cors from 'cors'
 
 import users from './users'
 import profiles from './profiles'
