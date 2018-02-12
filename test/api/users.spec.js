@@ -2,16 +2,31 @@ import utils from '../utils'
 const app = require('../../api/app')
 const request = require('supertest')(app)
 
+const batman = {
+  username: 'batman',
+  password: 'trustNo1',
+  active: true,
+  admin: true,
+  createdAt: new Date(),
+  updatedAt: new Date()
+}
+
 beforeEach(done => {
   utils.runMigrations()
-    .then(() => utils.runSeeders()
-      .then(() => done()))
+    .then(() => {
+      utils.sequelize.queryInterface.bulkInsert('Users', [batman])
+        .then(() => done())
+    })
 })
 
 afterEach(done => {
-  utils.rollbackSeeders()
-    .then(() => utils.rollbackMigrations()
-      .then(() => done()))
+  utils.sequelize.queryInterface.dropAllTables()
+    .then(() => done())
+})
+
+afterAll(done => {
+  utils.sequelize.close()
+    .then(() => done())
 })
 
 describe('Test Users', () => {
@@ -42,10 +57,10 @@ describe('Test Users', () => {
 })
 
 describe('Test user details', () => {
-  test('It should response 200 the GET method', () => {
-    return request
-      .get('/api/users/1')
-      .expect(200)
+  test('It should response 200 the GET method', async () => {
+    const fetched = await request.get('/api/users/1')
+    expect(fetched.statusCode).toBe(200)
+    expect(fetched.body.username).toBe(batman.username)
   })
   test('respond with json', () => {
     return request
