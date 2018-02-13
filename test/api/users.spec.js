@@ -1,33 +1,11 @@
-import utils from '../utils'
+import fixtures from '../fixtures'
 const app = require('../../api/app')
 const request = require('supertest')(app)
+const db = fixtures.db
 
-const batman = {
-  username: 'batman',
-  password: 'trustNo1',
-  active: true,
-  admin: true,
-  createdAt: new Date(),
-  updatedAt: new Date()
-}
-
-beforeEach(done => {
-  utils.runMigrations()
-    .then(() => {
-      utils.sequelize.queryInterface.bulkInsert('Users', [batman])
-        .then(() => done())
-    })
-})
-
-afterEach(done => {
-  utils.sequelize.queryInterface.dropAllTables()
-    .then(() => done())
-})
-
-afterAll(done => {
-  utils.sequelize.close()
-    .then(() => done())
-})
+beforeEach(done => fixtures.init(done))
+afterEach(done => fixtures.drop(done))
+afterAll(done => fixtures.close(done))
 
 describe('Test Users', () => {
   test('It should response 200 the GET method', () => {
@@ -58,19 +36,19 @@ describe('Test Users', () => {
 
 describe('Test user details', () => {
   test('It should response 200 the GET method', async () => {
-    const fetched = await request.get('/api/users/1')
+    const fetched = await request.get('/api/users/' + db.user1.id)
     expect(fetched.statusCode).toBe(200)
-    expect(fetched.body.username).toBe(batman.username)
+    expect(fetched.body).toMatchObject(db.user1)
   })
   test('respond with json', () => {
     return request
-      .get('/api/users/1')
+      .get('/api/users/' + db.user1.id)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200)
   })
   test('update user', async () => {
-    const current = await request.get('/api/users/1')
+    const current = await request.get('/api/users/' + db.user1.id)
     let user = {
       'username': 'Test.User',
       'password': 'fadsf',
@@ -78,7 +56,7 @@ describe('Test user details', () => {
       'admin': false
     }
     const new_ = await request
-      .put('/api/users/1')
+      .put('/api/users/' + db.user1.id)
       .send(user)
 
     expect(new_.statusCode).toBe(200)

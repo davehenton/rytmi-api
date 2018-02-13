@@ -18,15 +18,15 @@ module.exports = {
 
   create: (profileId, attrs) => {
     delete attrs.id
-    attrs.profileId = profileId
+    attrs.profileId = parseInt(profileId)
     return models.ProfileSkill
       .build(attrs)
       .save()
   },
 
   update: (profileId, profileSkillId, attrs) => {
-    attrs.id = profileSkillId
-    attrs.profileId = profileId
+    attrs.id = parseInt(profileId)
+    attrs.profileId = parseInt(profileId)
     return models.ProfileSkill
       .findOne({where: {
         id: profileSkillId,
