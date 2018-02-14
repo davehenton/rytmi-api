@@ -2,6 +2,7 @@ import fixtures from '../fixtures'
 const app = require('../../api/app')
 const request = require('supertest')(app)
 const db = fixtures.db
+const byId = (a, b) => a.id - b.id
 
 beforeEach(done => fixtures.init(done))
 afterEach(done => fixtures.drop(done))
@@ -23,7 +24,11 @@ describe('Fetching profiles', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200)
-    expect(all.body).toMatchObject([db.user1Profile, db.user2Profile])
+    expect(all.body.sort(byId))
+      .toMatchObject([
+        db.user1Profile,
+        db.user2Profile
+      ].sort(byId))
   })
 
   it('should fetch profile by id', async () => {
@@ -129,7 +134,8 @@ describe('Fetching profiles', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200)
-    expect(all.body).toMatchObject([db.user1Profile, db.user2Profile])
+    expect(all.body.sort(byId))
+      .toMatchObject([db.user1Profile, db.user2Profile].sort(byId))
   })
 
   it('should fetch profile by id', async () => {
@@ -149,7 +155,11 @@ describe('Fetching profileSkills', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200)
-    expect(profileSkills.body).toMatchObject([db.user1ProfileSkill1, db.user1ProfileSkill2])
+    expect(profileSkills.body.sort(byId))
+      .toMatchObject([
+        db.user1ProfileSkill1,
+        db.user1ProfileSkill2
+      ].sort(byId))
   })
 
   it('should return profileSkill by id', async () => {
