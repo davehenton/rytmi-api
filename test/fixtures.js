@@ -2,7 +2,6 @@ import fs from 'fs'
 import path from 'path'
 import models from '../db/models'
 
-const migrations = requireModules('../db/migrations')
 const sequelize = models.sequelize
 const db = {
   user1: {
@@ -103,6 +102,20 @@ const db = {
   }
 }
 
+async function init (done) {
+  await runMigrations(requireModules('../db/migrations'))
+  await sequelize.queryInterface.bulkInsert('Skills', [db.skill1, db.skill2, db.skill3])
+  await Promise.all([
+    insertUser(db.user1, db.user1Profile, [db.user1ProfileSkill1, db.user1ProfileSkill2]),
+    insertUser(db.user2, db.user2Profile, [db.user2ProfileSkill]),
+    models.User.build(db.user3).save().then(savedUser => {
+      db.user3.id = savedUser.id
+      db.user3Profile.userId = savedUser.id
+    })
+  ])
+  done()
+}
+
 function requireModules (relativePath) {
   let fullPath = path.join(__dirname, relativePath)
   return fs.readdirSync(fullPath)
@@ -116,20 +129,6 @@ function runMigrations (modules) {
       return migration.up(sequelize.queryInterface, sequelize.Sequelize)
     })
   }, Promise.resolve())
-}
-
-async function init (done) {
-  await runMigrations(migrations)
-  await sequelize.queryInterface.bulkInsert('Skills', [db.skill1, db.skill2, db.skill3])
-  await Promise.all([
-    insertUser(db.user1, db.user1Profile, [db.user1ProfileSkill1, db.user1ProfileSkill2]),
-    insertUser(db.user2, db.user2Profile, [db.user2ProfileSkill]),
-    models.User.build(db.user3).save().then(savedUser => {
-      db.user3.id = savedUser.id
-      db.user3Profile.userId = savedUser.id
-    })
-  ])
-  done()
 }
 
 function insertUser (user, profile, profileSkills) {
