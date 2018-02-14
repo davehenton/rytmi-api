@@ -1,87 +1,104 @@
-import utils from '../utils'
+import fixtures from '../fixtures'
 const app = require('../../api/app')
 const request = require('supertest')(app)
+const db = fixtures.db
+const byId = (a, b) => a.id - b.id
 
-const batman = {
-  username: 'batman',
-  password: 'trustNo1',
-  active: true,
-  admin: true,
-  createdAt: new Date(),
-  updatedAt: new Date()
-}
+beforeEach(done => fixtures.init(done))
+afterEach(done => fixtures.drop(done))
+afterAll(done => fixtures.close(done))
 
-beforeEach(done => {
-  utils.runMigrations()
-    .then(() => {
-      utils.sequelize.queryInterface.bulkInsert('Users', [batman])
-        .then(() => done())
-    })
-})
-
-afterEach(done => {
-  utils.sequelize.queryInterface.dropAllTables()
-    .then(() => done())
-})
-
-afterAll(done => {
-  utils.sequelize.close()
-    .then(() => done())
-})
-
-describe('Test Users', () => {
-  test('It should response 200 the GET method', () => {
-    return request
-      .get('/api/users')
-      .expect(200)
-  })
-  test('respond with json', () => {
-    return request
+describe('Fetching Users', () => {
+  it('should return all users', async () => {
+    const all = await request
       .get('/api/users')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200)
+    expect(all.body.sort(byId))
+      .toMatchObject([db.user1, db.user2, db.user3].sort(byId))
   })
-  test('post a new user', () => {
-    let user = {
+
+  it('should return user by id', async () => {
+    const fetched = await request.get('/api/users/' + db.user1.id)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200)
+    expect(fetched.body).toMatchObject(db.user1)
+  })
+})
+
+describe('Creating and updating users', () => {
+  it('should persist and return new user', async () => {
+    const user = {
       'username': 'Test.User',
       'password': 'fadsf',
       'active': true,
       'admin': false
     }
-    return request
+
+    const saved = await request
       .post('/api/users')
       .send(user)
       .expect(201)
-  })
-})
+    expect(saved.body).toMatchObject(user)
 
-describe('Test user details', () => {
-  test('It should response 200 the GET method', async () => {
-    const fetched = await request.get('/api/users/1')
-    expect(fetched.statusCode).toBe(200)
-    expect(fetched.body.username).toBe(batman.username)
-  })
-  test('respond with json', () => {
-    return request
-      .get('/api/users/1')
+    const fetched = await request.get('/api/users/' + saved.body.id)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200)
+    expect(fetched.body).toMatchObject(user)
   })
-  test('update user', async () => {
-    const current = await request.get('/api/users/1')
-    let user = {
+
+  it('should update user and return the updated user', async () => {
+    const current = await request.get('/api/users/' + db.user1.id)
+    const user = {
       'username': 'Test.User',
       'password': 'fadsf',
       'active': true,
       'admin': false
     }
     const new_ = await request
-      .put('/api/users/1')
+      .put('/api/users/' + db.user1.id)
       .send(user)
+      .expect(200)
+    expect(new_.body).toMatchObject(user)
+    expect(new_.body).not.toMatchObject(current)
+  })
 
-    expect(new_.statusCode).toBe(200)
-    expect(current.body.username).not.toBe(new_.body.username)
+  it('should ignore passed id attribute', async () => {
+    const user = {
+      id: 999999999,
+      'username': 'Test.User',
+      'password': 'fadsf',
+      'active': true,
+      'admin': false
+    }
+
+    const created = await request
+      .post('/api/users')
+      .send(user)
+      .expect(201)
+    expect(created.body.id).not.toBe(user.id)
+
+    const fetched = await request
+      .get('/api/users/' + created.body.id)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200)
+    expect(fetched.body.id).not.toBe(user.id)
+
+    const updated = await request
+      .put('/api/users/' + created.body.id)
+      .send(user)
+      .expect(200)
+    expect(updated.body.id).not.toBe(user.id)
+
+    const fetchedAgain = await request
+      .get('/api/users/' + created.body.id)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect(200)
+    expect(fetchedAgain.body.id).not.toBe(user.id)
   })
 })

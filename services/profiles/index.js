@@ -24,7 +24,7 @@ module.exports = {
   },
 
   update: (id, attrs) => {
-    attrs.id = id
+    attrs.id = parseInt(id)
     delete attrs.userId
     return models.Profile
       .findById(id)

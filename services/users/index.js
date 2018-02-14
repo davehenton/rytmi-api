@@ -19,7 +19,7 @@ module.exports = {
   },
 
   update: (id, attrs) => {
-    attrs.id = id
+    attrs.id = parseInt(id)
     return models.User
       .findById(id)
       .then(user => {

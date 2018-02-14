@@ -35,4 +35,11 @@ jspm_packages
 # dotenv config
 .env
 
+# coverage folder
 coverage
+
+# swap files
+*.swp
+
+# thanks Steve
+.DS_Store
