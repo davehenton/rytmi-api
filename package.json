@@ -21,7 +21,7 @@
   "jest": {
     "testEnvironment": "node",
     "collectCoverage": true,
-    "coverageReporters": ["json", "html", "text-summary"],
+    "coverageReporters": ["lcov", "json", "html", "text-summary"],
     "collectCoverageFrom": [
       "**/*.js",
       "!**/node_modules/**",
