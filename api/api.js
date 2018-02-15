@@ -7,6 +7,7 @@ import users from './users'
 import profiles from './profiles'
 import skills from './skills'
 import profileSkills from './profileSkills'
+import auth from './auth'
 
 require('dotenv').config()
 
@@ -25,7 +26,6 @@ const logger = new (winston.Logger)({
 export default () => {
   let api = Router()
   api.use(bodyParser.json())
-
   api.get('/', (req, res) => {
     logger.info('GET request to', req.url, 'from', req.headers['x-forwarded-for'] || req.connection.remoteAddress)
     res.json({ version })
@@ -35,6 +35,6 @@ export default () => {
   api.use('/profiles', profiles())
   api.use('/skills', skills())
   api.use('/profileskills', profileSkills())
-
+  api.use('/auth', auth())
   return api
 }
