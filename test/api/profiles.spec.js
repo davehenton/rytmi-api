@@ -141,6 +141,18 @@ describe('Fetching profileSkills', () => {
       .expect(200)
     expect(profileSkill.body).toMatchObject(db.user1ProfileSkill1)
   })
+
+  it('should return 404 for invalid profileskill', async () => {
+    const profileSkill = await request
+      .get('/api/profiles/' + db.user1Profile.id + '/skills/1000')
+      .expect(404)
+  })
+  it('should return 404 if requesting other users profileskill', async () => {
+    const profileSkill = await request
+      .get('/api/profiles/' + db.user2Profile.id + '/skills/' + db.user1ProfileSkill1.id)
+      .expect(404)
+  })
+
 })
 
 describe('Creating, updating and deleting profileSkills', () => {
@@ -155,7 +167,7 @@ describe('Creating, updating and deleting profileSkills', () => {
     }
 
     const created = await request
-      .post('/api/profiles/' + db.user1Profile.id + /skills/)
+      .post('/api/profiles/' + db.user1Profile.id + '/skills/')
       .send(profileSkill)
       .expect(201)
     expect(created.body).toMatchObject(profileSkill)
@@ -179,7 +191,7 @@ describe('Creating, updating and deleting profileSkills', () => {
     }
 
     const updated = await request
-      .put('/api/profiles/' + db.user1Profile.id + /skills/ + db.user1ProfileSkill1.id)
+      .put('/api/profiles/' + db.user1Profile.id + '/skills/' + db.user1ProfileSkill1.id)
       .send(profileSkill)
       .expect(200)
     expect(updated.body).toMatchObject(profileSkill)
@@ -194,7 +206,7 @@ describe('Creating, updating and deleting profileSkills', () => {
 
   it('should delete profileSkill', async () => {
     await request
-      .delete('/api/profiles/' + db.user1Profile.id + /skills/ + db.user1ProfileSkill1.id)
+      .delete('/api/profiles/' + db.user1Profile.id + '/skills/' + db.user1ProfileSkill1.id)
       .expect(204)
 
     // TODO: should return 404
