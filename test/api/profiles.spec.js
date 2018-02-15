@@ -118,35 +118,6 @@ describe('Creating and updating profiles', () => {
   })
 })
 
-describe('Fetching profiles', () => {
-  it('should return active profiles', async () => {
-    const active = await request
-      .get('/api/profiles')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200)
-    expect(active.body).toMatchObject([db.user1Profile])
-  })
-
-  it('should return all profiles', async () => {
-    const all = await request
-      .get('/api/profiles/all')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200)
-    expect(all.body.sort(byId))
-      .toMatchObject([db.user1Profile, db.user2Profile].sort(byId))
-  })
-
-  it('should fetch profile by id', async () => {
-    const fetched = await request
-      .get('/api/profiles/' + db.user1Profile.id)
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200)
-    expect(fetched.body).toMatchObject(db.user1Profile)
-  })
-})
 
 describe('Fetching profileSkills', () => {
   it('should return profileSkills for the user', async () => {
