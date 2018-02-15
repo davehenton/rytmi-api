@@ -1,6 +1,9 @@
 import { Router } from 'express'
 import skillService from '../../services/skills'
+import utils from '../utils'
+
 const router = Router()
+router.param('id', utils.findObjectOr404('skill', skillService))
 
 export default () => {
   router.get('/', (req, res) => {
@@ -14,13 +17,8 @@ export default () => {
   })
 
   router.get('/:id', (req, res) => {
-    skillService.get(req.params.id)
-      .then(skill => {
-        res.json(skill)
-      })
-      .catch(err => {
-        res.status(500).json(err)
-      })
+    const skill = req.skill
+    res.status(200).json(skill)
   })
 
   return router
