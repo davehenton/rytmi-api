@@ -4,21 +4,21 @@ import utils from '../../utils'
 
 const router = Router()
 router.param('profileSkillId', (req, res, next, value) => {
-    const profile = req.profile
-    profileSkillService.getByIds(profile.id, value)
-      .then(profileSkill => {
-        if (profileSkill) {
-          req.profileSkill = profileSkill
-          next()
-        } else {
-          res.status(404).json(utils.errorTemplate(404, 'prfileSkill not found'))
-        }
-      })
-      .catch(err => {
-        res.status(500).send(err)
-      })
-  }) 
-  
+  const profile = req.profile
+  profileSkillService.getByIds(profile.id, value)
+    .then(profileSkill => {
+      if (profileSkill) {
+        req.profileSkill = profileSkill
+        next()
+      } else {
+        res.status(404).json(utils.errorTemplate(404, 'profileSkill not found'))
+      }
+    })
+    .catch(err => {
+      res.status(500).send(err)
+    })
+})
+
 export default () => {
   router.get('/', (req, res) => {
     const profile = req.profile
