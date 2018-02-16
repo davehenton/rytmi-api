@@ -1,5 +1,14 @@
 
-module.exports = {
+
+let utils = module.exports = {
+  errorTemplate: (statusCode, message) => {
+    return {
+      error: {
+        code: statusCode,
+        message: message
+      }
+    }
+  },
   findObjectOr404:  (objName, service) => {
     return (req, res, next, value) => {
       service.get(value)
@@ -8,7 +17,9 @@ module.exports = {
           req[objName] = obj
           next()
         } else {
-          res.status(404).send(objName + ' not found')
+          res
+            .status(404)
+            .json(utils.errorTemplate(404, objName+' not found'))
         }
       })
       .catch(err => {

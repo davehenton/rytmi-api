@@ -209,12 +209,12 @@ describe('Creating, updating and deleting profileSkills', () => {
       .delete('/api/profiles/' + db.user1Profile.id + '/skills/' + db.user1ProfileSkill1.id)
       .expect(204)
 
-    // TODO: should return 404
     const fetched = await request
       .get('/api/profiles/' + db.user1Profile.id + '/skills/' + db.user1ProfileSkill1.id)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200)
-    expect(fetched.body).toBeNull()
+      .expect(404)
+    // TODO: decide what 404 body should contain
+    // expect(fetched.body).toBeNull() 
   })
 })

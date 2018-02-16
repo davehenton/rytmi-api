@@ -11,7 +11,7 @@ router.param('profileSkillId', (req, res, next, value) => {
           req.profileSkill = profileSkill
           next()
         } else {
-          res.status(404).send('profileSkill not found')
+          res.status(404).json(utils.errorTemplate(404, 'prfileSkill not found'))
         }
       })
       .catch(err => {
