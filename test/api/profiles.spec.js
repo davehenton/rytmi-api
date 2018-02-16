@@ -118,36 +118,6 @@ describe('Creating and updating profiles', () => {
   })
 })
 
-describe('Fetching profiles', () => {
-  it('should return active profiles', async () => {
-    const active = await request
-      .get('/api/profiles')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200)
-    expect(active.body).toMatchObject([db.user1Profile])
-  })
-
-  it('should return all profiles', async () => {
-    const all = await request
-      .get('/api/profiles/all')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200)
-    expect(all.body.sort(byId))
-      .toMatchObject([db.user1Profile, db.user2Profile].sort(byId))
-  })
-
-  it('should fetch profile by id', async () => {
-    const fetched = await request
-      .get('/api/profiles/' + db.user1Profile.id)
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200)
-    expect(fetched.body).toMatchObject(db.user1Profile)
-  })
-})
-
 describe('Fetching profileSkills', () => {
   it('should return profileSkills for the user', async () => {
     const profileSkills = await request
@@ -170,6 +140,17 @@ describe('Fetching profileSkills', () => {
       .expect(200)
     expect(profileSkill.body).toMatchObject(db.user1ProfileSkill1)
   })
+
+  it('should return 404 for invalid profileskill', () => {
+    return request
+      .get('/api/profiles/' + db.user1Profile.id + '/skills/1000')
+      .expect(404)
+  })
+  it('should return 404 if requesting other users profileskill', () => {
+    return request
+      .get('/api/profiles/' + db.user2Profile.id + '/skills/' + db.user1ProfileSkill1.id)
+      .expect(404)
+  })
 })
 
 describe('Creating, updating and deleting profileSkills', () => {
@@ -184,7 +165,7 @@ describe('Creating, updating and deleting profileSkills', () => {
     }
 
     const created = await request
-      .post('/api/profiles/' + db.user1Profile.id + /skills/)
+      .post('/api/profiles/' + db.user1Profile.id + '/skills/')
       .send(profileSkill)
       .expect(201)
     expect(created.body).toMatchObject(profileSkill)
@@ -208,7 +189,7 @@ describe('Creating, updating and deleting profileSkills', () => {
     }
 
     const updated = await request
-      .put('/api/profiles/' + db.user1Profile.id + /skills/ + db.user1ProfileSkill1.id)
+      .put('/api/profiles/' + db.user1Profile.id + '/skills/' + db.user1ProfileSkill1.id)
       .send(profileSkill)
       .expect(200)
     expect(updated.body).toMatchObject(profileSkill)
@@ -223,15 +204,15 @@ describe('Creating, updating and deleting profileSkills', () => {
 
   it('should delete profileSkill', async () => {
     await request
-      .delete('/api/profiles/' + db.user1Profile.id + /skills/ + db.user1ProfileSkill1.id)
+      .delete('/api/profiles/' + db.user1Profile.id + '/skills/' + db.user1ProfileSkill1.id)
       .expect(204)
 
-    // TODO: should return 404
-    const fetched = await request
+    return request
       .get('/api/profiles/' + db.user1Profile.id + '/skills/' + db.user1ProfileSkill1.id)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200)
-    expect(fetched.body).toBeNull()
+      .expect(404)
+    // TODO: decide what 404 body should contain
+    // expect(fetched.body).toBeNull()
   })
 })

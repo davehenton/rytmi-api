@@ -1,6 +1,9 @@
 import { Router } from 'express'
 import userService from '../../services/users'
+import utils from '../utils'
+
 const router = Router()
+router.param('id', utils.findObjectOr404('user', userService))
 
 export default () => {
   router.get('/', (req, res) => {
@@ -24,13 +27,8 @@ export default () => {
   })
 
   router.get('/:id', (req, res) => {
-    userService.get(req.params.id)
-      .then(user => {
-        res.json(user)
-      })
-      .catch(err => {
-        res.status(500).json(err)
-      })
+    const user = req.user
+    res.json(user)
   })
 
   router.put('/:id', (req, res) => {

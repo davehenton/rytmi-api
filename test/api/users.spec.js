@@ -26,6 +26,13 @@ describe('Fetching Users', () => {
       .expect(200)
     expect(fetched.body).toMatchObject(db.user1)
   })
+
+  it('should return 404 for invalid user id', () => {
+    return request.get('/api/users/1000')
+      .set('Accept', 'application/json')
+      .expect(404)
+  })
+
 })
 
 describe('Creating and updating users', () => {
@@ -100,5 +107,11 @@ describe('Creating and updating users', () => {
       .expect('Content-Type', /json/)
       .expect(200)
     expect(fetchedAgain.body.id).not.toBe(user.id)
+  })
+
+  it('should return 404 when updating invalid user id', () => {
+    return request
+      .put('/api/users/1000')
+      .expect(404)
   })
 })

@@ -11,6 +11,15 @@ module.exports = {
       .findAll({where: {profileId: profileId}})
   },
 
+  getByIds: (profileId, profileSkillId) => {
+    return models.ProfileSkill
+      .findOne({where: {
+        id: profileSkillId,
+        profileId: profileId
+        }
+      })
+  },
+
   get: (id) => {
     return models.ProfileSkill
       .findById(id)

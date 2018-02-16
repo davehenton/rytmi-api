@@ -1,6 +1,9 @@
 import { Router } from 'express'
 import profileSkillService from '../../services/profileSkills'
+import utils from '../utils'
+
 const router = Router()
+router.param('id', utils.findObjectOr404('profileSkill', profileSkillService))
 
 export default () => {
   router.get('/', (req, res) => {
@@ -14,13 +17,8 @@ export default () => {
   })
 
   router.get('/:id', (req, res) => {
-    profileSkillService.get(req.params.id)
-      .then(profileSkills => {
-        res.json(profileSkills)
-      })
-      .catch(err => {
-        res.status(500).json(err)
-      })
+    const profileSkill = req.profileSkill
+    res.json(profileSkill)
   })
 
   return router
