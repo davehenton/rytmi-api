@@ -48,7 +48,8 @@ export default () => {
   })
 
   router.put('/:profileSkillId', (req, res) => {
-    profileSkillService.update(req.params.id, req.params.profileSkillId, req.body)
+    const profile = req.profile
+    profileSkillService.update(profile.id, req.params.profileSkillId, req.body)
       .then(profileSkill => {
         res.json(profileSkill)
       })
@@ -58,7 +59,8 @@ export default () => {
   })
 
   router.delete('/:profileSkillId', (req, res) => {
-    profileSkillService.delete(req.params.id, req.params.profileSkillId)
+    const profile = req.profile
+    profileSkillService.delete(profile.id, req.params.profileSkillId)
       .then(profileSkill => {
         res.status(204).json(profileSkill)
       })
