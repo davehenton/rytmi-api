@@ -21,5 +21,25 @@ export default () => {
     res.status(200).json(skill)
   })
 
+  router.post('/', (req, res) => {
+    skillService.create(req.body)
+      .then(skill => {
+        res.status(201).json(skill)
+      })
+      .catch(err => {
+        res.status(500).json(err)
+      })
+  })
+
+  router.put('/:id', (req, res) => {
+    skillService.update(req.params.id, req.body)
+      .then(skill => {
+        res.json(skill)
+      })
+      .catch(err => {
+        res.status(500).json(err)
+      })
+  })
+
   return router
 }
