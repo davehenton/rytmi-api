@@ -1,4 +1,7 @@
 language: node_js
+env:
+  global:
+    - CC_TEST_REPORTER_ID=b072baeb95bff25baf79a937d64f7fd06dd4f9c78434516d549cbc2f4c87dedf
 node_js:
   - "9"
 before_script:
