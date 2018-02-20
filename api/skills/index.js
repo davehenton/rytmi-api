@@ -1,7 +1,8 @@
+import SkillService from '../../services/skills'
 import { Router } from 'express'
-import skillService from '../../services/skills'
 import utils from '../utils'
 
+const skillService = new SkillService()
 const router = Router()
 router.param('id', utils.findObjectOr404('skill', skillService))
 
