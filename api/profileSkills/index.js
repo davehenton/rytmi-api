@@ -1,25 +1,20 @@
 import { Router } from 'express'
 import profileSkillService from '../../services/profileSkills'
-import utils from '../utils'
+import {findObjectOr404, wrapAsync} from '../utils'
 
 const router = Router()
-router.param('id', utils.findObjectOr404('profileSkill', profileSkillService))
+router.param('id', findObjectOr404('profileSkill', profileSkillService))
 
 export default () => {
-  router.get('/', (req, res) => {
-    profileSkillService.getAll()
-      .then(profileSkills => {
-        res.json(profileSkills)
-      })
-      .catch(err => {
-        res.status(500).json(err)
-      })
-  })
+  router.get('/', wrapAsync(async (req, res) => {
+    const profileSkills = await profileSkillService.getAll()
+    res.json(profileSkills)
+  }))
 
-  router.get('/:id', (req, res) => {
+  router.get('/:id', wrapAsync(async (req, res) => {
     const profileSkill = req.profileSkill
     res.json(profileSkill)
-  })
+  }))
 
   return router
 }
